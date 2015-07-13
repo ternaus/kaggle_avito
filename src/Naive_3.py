@@ -26,14 +26,7 @@ select Position, HistCTR, IsClick, Price, Title, Params, SearchDate
 from ((trainSearchStream join AdsInfo using(AdID)) join SearchInfo using(SearchID))
 where ObjectType = 3 and SearchDate >= {min_date}
 limit {N};
-""".format(N=10**5, min_date='2015-04-26')
-
-query = """
-select Position, HistCTR, IsClick, Price, Params
-from (trainSearchStream join AdsInfo using(AdID))
-where ObjectType = 3
-limit {N};
-""".format(N=10**5)
+""".format(N=10**5, min_date="'2015-04-26'")
 
 
 print 'reading query'
