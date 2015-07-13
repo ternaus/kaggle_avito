@@ -1,4 +1,5 @@
 from __future__ import division
+from sklearn.decomposition import TruncatedSVD
 
 __author__ = 'Vladimir Iglovikov'
 
@@ -12,6 +13,7 @@ import time
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+from pylab import *
 
 conn = sqlite3.connect('../data/database.sqlite')
 
@@ -64,14 +66,22 @@ vectorizer = CountVectorizer(input=u'content',
                               token_pattern=u'\d+',
                              ngram_range=(1, 1),
                              analyzer=u'word',
-                             max_df=100,
-                             min_df=0,
+                             max_df=1.0,
+                             min_df=0.0,
                              max_features=None,
                              vocabulary=None,
                              binary=True)
 
+
+
 params_X = vectorizer.fit_transform(df['params_new'])
 
+svd = TruncatedSVD(n_components=39)
+
+params_x = svd.fit_transform(params_X)
+
+plot(svd.explained_variance_ratio_)
+savefig('svd.png')
 
 X = df[['Position', 'HistCTR', 'Price']]
 y = df.IsClick
