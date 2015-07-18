@@ -31,6 +31,9 @@ visits.save(os.path.join(data_path, 'visits_1'))
 
 print 'cleaning SearchInfo'
 search = gl.SFrame(os.path.join(data_path, 'SearchInfo.tsv'))
+
+search['SearchDate'] = search['SearchDate'].str_to_datetime()
+
 search.save(os.path.join(data_path, 'search_1'))
 
 print 'clean userinfo'

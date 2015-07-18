@@ -10,38 +10,24 @@ import graphlab as gl
 import os
 
 print 'reading train'
-train = gl.SFrame(os.path.join('..', 'data', 'trainSearch_1'))
+train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))
 
 print
 print 'train shape'
 print train.shape
 
 
-
-print 'reading AdsInfo'
-ads = gl.SFrame(os.path.join('..', 'data', 'ads_1'))
-print
-print 'ads shape'
-print ads.shape
-
-print 'merging train and ads'
-
-training = train.join(ads, on='AdID')
-
-print
-print 'training shape'
-print training.shape
-
 print 'splitting set'
-sf_train, sf_test = training.random_split(0.5,
+sf_train, sf_test = train.random_split(0.5,
                                           seed=42)
 
 features=['Position',
           'HistCTR',
           'Price',
           'CategoryID',
-          'AdID',
-          'LocationID']
+          # 'AdID',
+          # 'LocationID'
+          ]
 
 model = gl.logistic_classifier.create(sf_train,
                                       target='IsClick',
