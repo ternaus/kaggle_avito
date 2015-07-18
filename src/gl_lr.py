@@ -43,6 +43,7 @@ features=['Position',
           'AdID',
           'LocationID']
 
-model = gl.logistic_classifier.create(training,
+model = gl.logistic_classifier.create(sf_train,
                                       target='IsClick',
-                                      features=features)
+                                      features=features,
+                                      validation_set=sf_test)
