@@ -37,7 +37,7 @@ user = gl.SFrame(os.path.join(data_path, 'UserInfo.tsv'))
 user.save(os.path.join(data_path, 'user_1'))
 
 print 'clean PhoneRequestsStream'
-phone = gl.SFrame(os.path.join(data_path, 'PhoneRequestStream.tsv'))
+phone = gl.SFrame(os.path.join(data_path, 'PhoneRequestsStream.tsv'))
 phone.save(os.path.join(data_path, 'phone_1'))
 
 print 'clean Category'
