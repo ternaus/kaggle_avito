@@ -26,7 +26,7 @@ print ads.shape
 
 print 'merging train and ads'
 
-training = train.join(ads, on='AdId')
+training = train.join(ads, on='AdID')
 
 print
 print 'training shape'
