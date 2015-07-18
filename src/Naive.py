@@ -14,13 +14,16 @@ import numpy as np
 
 conn = sqlite3.connect('../data/database.sqlite')
 
-# query = """
-# select Position, HistCTR, IsClick from trainSearchStream where ObjectType = 3 limit {N}, {N};
-# """.format(N=3200000)
-
 query = """
-select Position, HistCTR, IsClick from trainSearchStream where ObjectType = 3;
-""".format(N=10000000)
+select Position, HistCTR, IsClick 
+from trainSearchStream 
+where ObjectType = 3 
+limit {N};
+""".format(N=100000)
+
+# query = """
+# select Position, HistCTR, IsClick from trainSearchStream where ObjectType = 3;
+# """.format(N=10000000)
 
 
 df = sql.read_sql(query, conn)
