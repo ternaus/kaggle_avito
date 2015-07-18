@@ -8,6 +8,7 @@ Dataset is big for my laptop => I will try slightly to clean and change format o
 
 import graphlab as gl
 import os
+import sys
 
 data_path = os.path.join('..', 'data')
 
@@ -20,7 +21,7 @@ train_new.save(os.path.join(data_path, 'trainSearch_1'))
 
 print 'working with test'
 test = gl.SFrame(os.path.join(data_path, 'testSearchStream.tsv'))
-test_new = train[train['ObjectType'] == 3]
+test_new = test[train['ObjectType'] == 3]
 del test_new['ObjectType']
 test_new.save(os.path.join(data_path, 'testSearch_1'))
 
