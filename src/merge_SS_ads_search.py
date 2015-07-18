@@ -15,12 +15,14 @@ train = gl.SFrame(os.path.join('..', 'data', 'train_ads'))
 print
 print 'train shape'
 print train.shape
+print train.column_names()
 
 print 'reading test'
 test = gl.SFrame(os.path.join('..', 'data', 'test_ads'))
 print
 print 'test shape'
 print test.shape
+print test.column_names()
 
 
 print 'reading SearchInfo'
@@ -28,6 +30,7 @@ search = gl.SFrame(os.path.join('..', 'data', 'search_1'))
 print
 print 'search shape'
 print search.shape
+print search.column_names()
 
 print 'merging train and search'
 training = train.join(search, on={'SearchID': 'SearchID',
