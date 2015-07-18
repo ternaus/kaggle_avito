@@ -34,8 +34,8 @@ print search.column_names()
 
 print 'merging train and search'
 training = train.join(search, on={'SearchID': 'SearchID',
-                                  'LocationID': 'SearchLocationID',
-                                  'CategoryID': 'SearchCategoryID'
+                                  'LocationID': 'LocationID',
+                                  'CategoryID': 'CategoryID'
                                   })
 
 print
@@ -44,8 +44,8 @@ print training.shape
 
 print 'merging test and ads'
 testing = test.join(search, on={'SearchID': 'SearchID',
-                                'LocationID': 'SearchLocationID',
-                                'CategoryID': 'SearchCategoryID'
+                                'LocationID': 'LocationID',
+                                'CategoryID': 'CategoryID'
                                 })
 
 print
