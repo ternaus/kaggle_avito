@@ -32,25 +32,31 @@ print 'search shape'
 print search.shape
 print search.column_names()
 
+print 'shuffling train'
+
+x = gl.cross_validation.shuffle(train)[:10**7]
+
 print 'merging train and search'
-training = train.join(search, on={'SearchID': 'SearchID',
-                                  'LocationID': 'LocationID',
-                                  'CategoryID': 'CategoryID'
+training = x.join(search, on={'SearchID': 'SearchID',
+                                  # 'LocationID': 'LocationID',
+                                  # 'CategoryID': 'CategoryID'
                                   })
 
 print
 print 'training shape'
 print training.shape
+print training.column_names()
 
 print 'merging test and ads'
 testing = test.join(search, on={'SearchID': 'SearchID',
-                                'LocationID': 'LocationID',
-                                'CategoryID': 'CategoryID'
+                                # 'LocationID': 'LocationID',
+                                # 'CategoryID': 'CategoryID'
                                 })
 
 print
 print 'testing shape'
 print testing.shape
+print testing.column_names()
 
 print 'saving train'
 training.save(os.path.join('..', 'data', 'train_ads_search'))
