@@ -30,14 +30,20 @@ print 'search shape'
 print search.shape
 
 print 'merging train and search'
-training = train.join(search, on='SearchID')
+training = train.join(search, on={'SearchID': 'SearchID',
+                                  'LocationID': 'SearchLocationID',
+                                  'CategoryID': 'SearchCategoryID'
+                                  })
 
 print
 print 'training shape'
 print training.shape
 
 print 'merging test and ads'
-testing = test.join(search, on='SearchID')
+testing = test.join(search, on={'SearchID': 'SearchID',
+                                'LocationID': 'SearchLocationID',
+                                'CategoryID': 'SearchCategoryID'
+                                })
 
 print
 print 'testing shape'
