@@ -10,44 +10,43 @@ import graphlab as gl
 import os
 
 print 'reading train'
-train = gl.SFrame(os.path.join('..', 'data', 'trainSearch_1'))
+train = gl.SFrame(os.path.join('..', 'data', 'train_ads'))
 
 print
 print 'train shape'
 print train.shape
 
 print 'reading test'
-test = gl.SFrame(os.path.join('..', 'data', 'testSearch_1'))
+test = gl.SFrame(os.path.join('..', 'data', 'test_ads'))
 print
 print 'test shape'
 print test.shape
 
 
-
-print 'reading AdsInfo'
-ads = gl.SFrame(os.path.join('..', 'data', 'ads_1'))
+print 'reading SearchInfo'
+search = gl.SFrame(os.path.join('..', 'data', 'search_1'))
 print
-print 'ads shape'
-print ads.shape
+print 'search shape'
+print search.shape
 
-print 'merging train and ads'
-training = train.join(ads, on='AdID')
+print 'merging train and search'
+training = train.join(search, on='SearchID')
 
 print
 print 'training shape'
 print training.shape
 
 print 'merging test and ads'
-testing = test.join(ads, on='AdID')
+testing = test.join(search, on='SearchID')
 
 print
 print 'testing shape'
 print testing.shape
 
 print 'saving train'
-training.save(os.path.join('..', 'data', 'train_ads'))
+training.save(os.path.join('..', 'data', 'train_ads_search'))
 
 print 'saving test'
-testing.save(os.path.join('..', 'data', 'test_ads'))
+testing.save(os.path.join('..', 'data', 'test_ads_search'))
 
 
