@@ -34,10 +34,10 @@ print search.column_names()
 
 print 'shuffling train'
 
-x = gl.cross_validation.shuffle(train)[:10**7]
+# x = gl.cross_validation.shuffle(train)[:10**7]
 
 print 'merging train and search'
-training = x.join(search, on={'SearchID': 'SearchID',
+training = train[:10**7].join(search, on={'SearchID': 'SearchID',
                                   # 'LocationID': 'LocationID',
                                   # 'CategoryID': 'CategoryID'
                                   })
