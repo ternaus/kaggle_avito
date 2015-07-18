@@ -21,7 +21,7 @@ train_new.save(os.path.join(data_path, 'trainSearch_1'))
 
 print 'working with test'
 test = gl.SFrame(os.path.join(data_path, 'testSearchStream.tsv'))
-test_new = test[train['ObjectType'] == 3]
+test_new = test[test['ObjectType'] == 3]
 del test_new['ObjectType']
 test_new.save(os.path.join(data_path, 'testSearch_1'))
 
