@@ -61,8 +61,8 @@ train_cut['SearchDate'] = train_cut['SearchDate'].str_to_datetime()
 
 train_cut['month'] = train_cut['SearchDate'].apply(lambda x: x.month)
 train_cut['day'] = train_cut['SearchDate'].apply(lambda x: x.day)
-train_cut['weekday'] = train_cut['SearchDay'].apply(lambda x: x.weekday())
-train_cut['days'] = train_cut['SearchDay'].apply(lambda x: (x - jan1).days)
+train_cut['weekday'] = train_cut['SearchDate'].apply(lambda x: x.weekday())
+train_cut['days'] = train_cut['SearchDate'].apply(lambda x: (x - jan1).days)
 
 train_cut = train_cut[train_cut['SearchDate'] > min_date]
 
