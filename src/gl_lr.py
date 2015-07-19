@@ -51,10 +51,9 @@ X = train[:10**6]
 X['SearchDate'] = X['SearchDate'].str_to_datetime()
 
 X = X[X['SearchDate'] > min_date]
-X = X[features].to_dataframe()
-
-
 y = list(train[:10**6][X['SearchDate'] > min_date]['IsClick'])
+
+X = X[features].to_dataframe()
 
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
