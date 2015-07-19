@@ -41,8 +41,8 @@ features = ['Position',
           # 'LocationID'
           ]
 
-X = train[:10**6][features]
-y = train[:10**6].IsClick
+X = train[:10**6][features].to_dataframe()
+y = train[:10**6]['IsClick']
 
 random_state = 42
 
