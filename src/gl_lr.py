@@ -14,8 +14,10 @@ import math
 def llfun(act, pred):
     N = len(act)
     result = 0
+    epsilon = 1e-15
     for i in range(N):
-      result += act[i] * math.log(pred[i]) + (1 - act[i]) * math.log(1 - pred[i])
+
+      result += act[i] * math.log(pred[i] + epsilon) + (1 - act[i]) * math.log(1 - pred[i] + epsilon)
     #
     # epsilon = 1e-15
     # pred = sp.maximum(epsilon, pred)
