@@ -9,14 +9,20 @@ I will try to use logistic regression from Graphlab to predict
 import graphlab as gl
 import os
 import scipy as sp
+import math
 
 def llfun(act, pred):
-    epsilon = 1e-15
-    pred = sp.maximum(epsilon, pred)
-    pred = sp.minimum(1 - epsilon, pred)
-    ll = sum(act * sp.log(pred) + sp.subtract(1,act) * sp.log(sp.subtract(1, pred)))
-    ll = ll * -1.0/len(act)
-    return ll
+    N = len(act)
+    result = 0
+    for i in range(N):
+      result += act[i] * math.log(pred[i]) + (1 - act[i]) * math.log(1 - pred[i])
+    #
+    # epsilon = 1e-15
+    # pred = sp.maximum(epsilon, pred)
+    # pred = sp.minimum(1 - epsilon, pred)
+    # ll = sum(act * sp.log(pred) + sp.subtract(1,act) * sp.log(sp.subtract(1, pred)))
+    # ll = ll * -1.0/len(act)
+    return -result / N
 
 print 'reading train'
 train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))
