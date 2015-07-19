@@ -8,6 +8,15 @@ I will try to use logistic regression from Graphlab to predict
 
 import graphlab as gl
 import os
+import scipy as sp
+
+def llfun(act, pred):
+    epsilon = 1e-15
+    pred = sp.maximum(epsilon, pred)
+    pred = sp.minimum(1 - epsilon, pred)
+    ll = sum(act * sp.log(pred) + sp.subtract(1,act) * sp.log(sp.subtract(1, pred)))
+    ll = ll * -1.0/len(act)
+    return ll
 
 print 'reading train'
 train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))
@@ -35,3 +44,6 @@ model = gl.logistic_classifier.create(sf_train,
                                       target='IsClick',
                                       features=features,
                                       validation_set=sf_test)
+
+score = llfun(sf_test['IsClick'], model.predict(sf_test, output_type='probablility'))
+print score
