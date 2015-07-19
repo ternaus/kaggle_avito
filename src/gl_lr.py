@@ -23,6 +23,9 @@ def llfun(act, pred):
     ll = ll * -1.0/len(act)
     return ll
 
+
+min_date = gl.SArray(['2015-05-01']).str_to_datetime()[0]
+
 print 'reading train'
 train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))
 
@@ -42,8 +45,16 @@ features = ['Position',
           # 'LocationID'
           ]
 
-X = train[:10**6][features].to_dataframe()
-y = list(train[:10**6]['IsClick'])
+
+
+X = train[:10**6]
+X['SearchDate'] = X['SearchDate'].str_to_datetime()
+
+X = X[X['SearchDate'] > min_date]
+X = X[features].to_dataframe()
+
+
+y = list(train[:10**6][X['SearchDate'] > min_date]['IsClick'])
 
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
