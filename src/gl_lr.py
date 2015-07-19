@@ -16,15 +16,17 @@ print
 print 'train shape'
 print train.shape
 
+print 'filling missing values'
+a = train['Price'].mean()
+train = train.fillna('Price', a)
 
 print 'splitting set'
-sf_train, sf_test = train.random_split(0.5,
-                                          seed=42)
+sf_train, sf_test = train.random_split(0.5, seed=42)
 
 features=['Position',
           'HistCTR',
           'Price',
-          'CategoryID',
+          # 'CategoryID',
           # 'AdID',
           # 'LocationID'
           ]
