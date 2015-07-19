@@ -26,6 +26,8 @@ def llfun(act, pred):
 
 min_date = gl.SArray(['2015-05-01']).str_to_datetime()[0]
 
+jan1 = gl.SArray(['2015-01-01']).str_to_datetime()[0]
+
 print 'reading train'
 train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))
 
@@ -33,16 +35,20 @@ print
 print 'train shape'
 print train.shape
 
-print 'filling missing values'
-a = train['Price'].mean()
-train = train.fillna('Price', a)
+# print 'filling missing values'
+# a = train['Price'].mean()
+# train = train.fillna('Price', a)
 
 features = ['Position',
           'HistCTR',
-          'Price',
+          # 'Price',
           # 'CategoryID',
           # 'AdID',
           # 'LocationID'
+            'month',
+            'day',
+            'weekday',
+            'days'
           ]
 
 
@@ -52,6 +58,12 @@ X = train[:10**6]
 
 train_cut = train[:10**6]
 train_cut['SearchDate'] = train_cut['SearchDate'].str_to_datetime()
+
+train_cut['month'] = train_cut['SearchDate'].month
+train_cut['day'] = train_cut['SearchDate'].day
+train_cut['weekday'] = train_cut['SearchDay'].weekday()
+train_cut['days'] = train_cut['SearchDay'].apply(lambda x: (x - jan1).days)
+
 train_cut = train_cut[train_cut['SearchDate'] > min_date]
 
 y = list(train_cut['IsClick'])
