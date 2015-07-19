@@ -44,6 +44,8 @@ features = ['Position',
 X = train[:10**6][features].to_dataframe()
 y = train[:10**6]['IsClick']
 
+print X[:10]
+print y[:10]
 random_state = 42
 
 # Learn
