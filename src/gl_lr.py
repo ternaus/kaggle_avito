@@ -48,17 +48,23 @@ features = ['Position',
 
 
 X = train[:10**6]
-X['SearchDate'] = X['SearchDate'].str_to_datetime()
 
-X = X[X['SearchDate'] > min_date]
-y = list(train[:10**6][X['SearchDate'] > min_date]['IsClick'])
 
-X = X[features].to_dataframe()
+train_cut = train[:10**6]
+train_cut['SearchDate'] = train_cut['SearchDate'].str_to_datetime()
+train_cut = train_cut[train_cut['SearchDate'] > min_date]
+
+y = list(train_cut['IsClick'])
+
+X = train_cut[features].to_dataframe()
+
+print X.shape, len(y)
 
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 random_state = 42
+
 
 # Learn
 clf = LogisticRegression(random_state=random_state)
