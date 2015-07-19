@@ -13,6 +13,7 @@ from sklearn import cross_validation
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 def llfun(act, pred):
     epsilon = 1e-15
@@ -42,10 +43,11 @@ features = ['Position',
           ]
 
 X = train[:10**6][features].to_dataframe()
-y = train[:10**6]['IsClick']
+y = list(train[:10**6]['IsClick'])
 
-print X[:10]
-print y[:10]
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
 random_state = 42
 
 # Learn
