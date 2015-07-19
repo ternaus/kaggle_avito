@@ -45,5 +45,9 @@ model = gl.logistic_classifier.create(sf_train,
                                       features=features,
                                       validation_set=sf_test)
 
-score = llfun(sf_test['IsClick'], model.predict(sf_test, output_type='probablility'))
+print 'predicting'
+prediction = model.predict(sf_test, output_type='probablility')
+
+print 'calculating score'
+score = llfun(sf_test['IsClick'], )
 print score
