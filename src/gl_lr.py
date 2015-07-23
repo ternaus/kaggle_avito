@@ -26,6 +26,8 @@ def llfun(act, pred):
 
 min_date = gl.SArray(['2015-05-01']).str_to_datetime()[0]
 
+print min_date.hour
+
 jan1 = gl.SArray(['2015-01-01']).str_to_datetime()[0]
 
 print 'reading train'
