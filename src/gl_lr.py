@@ -69,7 +69,6 @@ train['RegionID.1'] = train['RegionID.1'].apply(lambda x: str(x))
 train['CityID'] = train['CityID'].apply(lambda x: str(x))
 train['CityID.1'] = train['CityID.1'].apply(lambda x: str(x))
 
-
 print train.shape
 
 ind = 2
