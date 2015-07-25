@@ -52,8 +52,6 @@ features = ['Position',
             'LocationID.1',            
           ]
 
-
-
 # train = train[:10**8]
 
 train = train[train['SearchDate'] > min_date]
