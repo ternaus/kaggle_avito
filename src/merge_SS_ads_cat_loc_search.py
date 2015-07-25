@@ -89,7 +89,7 @@ search = search.join(category, how='left',
                      )
 
 print 'merging train and search'
-training = train.join(search, how='left', on={'SearchID': 'SearchID',
+training = train.join(search, on={'SearchID': 'SearchID',
                                   # 'LocationID': 'LocationID',
                                   # 'CategoryID': 'CategoryID'
                                   })
