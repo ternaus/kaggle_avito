@@ -34,7 +34,7 @@ print search.column_names()
 print 'convert date to datetime format'
 search['SearchDate'] = search['SearchDate'].str_to_datetime()
 print 'cropping search'
-min_date = gl.SArray(['2015-05-01']).str_to_datetime()
+min_date = gl.SArray(['2015-05-01']).str_to_datetime()[0]
 search = search[search['SearchDate'] >= min_date]
 print 'search shape'
 print search.shape
