@@ -40,19 +40,19 @@ print 'search shape'
 print search.shape
 
 print 'reading category'
-category = gl.SFrame(os.path.join('category_1'))
+category = gl.SFrame(os.path.join('..', 'data', 'category_1'))
 print
 print 'category shape'
 print category.shape
 
 print 'reading location'
-location = gl.SFrame(os.path.join('location_1'))
+location = gl.SFrame(os.path.join('..', 'data', 'location_1'))
 print
 print 'location shape'
 print location.shape
 
 print 'reading UserInfo'
-user = gl.SFrame(os.path.join('user_1'))
+user = gl.SFrame(os.path.join('..', 'data', 'user_1'))
 
 print
 print 'user shape'
