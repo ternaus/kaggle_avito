@@ -31,6 +31,13 @@ print
 print 'search shape'
 print search.shape
 print search.column_names()
+print 'convert date to datetime format'
+search['SearchDate'] = search['SearchDate'].str_to_datetime()
+print 'cropping search'
+min_date = gl.SArray(['2015-05-01']).str_to_datetime()
+search = search[search['SearchDate'] >= min_date]
+print 'search shape'
+print search.shape
 
 print 'reading category'
 category = gl.SFrame(os.path.join('category_1'))
@@ -50,9 +57,6 @@ user = gl.SFrame(os.path.join('user_1'))
 print
 print 'user shape'
 print user.shape
-
-
-
 
 
 print 'merging train ads and category'
