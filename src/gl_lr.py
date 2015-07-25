@@ -14,100 +14,122 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import time
+import pandas as pd
 
-def llfun(act, pred):
-    epsilon = 1e-15
-    pred = sp.maximum(epsilon, pred)
-    pred = sp.minimum(1 - epsilon, pred)
-    ll = sum(act * sp.log(pred) + sp.subtract(1, act) * sp.log(sp.subtract(1, pred)))
-    ll = ll * -1.0/len(act)
-    return ll
-
-
-min_date = gl.SArray(['2015-05-01']).str_to_datetime()[0]
-
-print min_date.hour
+min_date = gl.SArray(['2015-05-10']).str_to_datetime()[0]
 
 jan1 = gl.SArray(['2015-01-01']).str_to_datetime()[0]
 
+
 print 'reading train'
-train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))
+train = gl.SFrame(os.path.join('..', 'data', 'train_ads_search'))[:10**5]
 
 print
 print 'train shape'
 print train.shape
 
-# print 'filling missing values'
-# a = train['Price'].mean()
-# train = train.fillna('Price', a)
+print 'filling missing values in Price'
+a = train['Price'].mean()
+train = train.fillna('Price', a)
 
 features = ['Position',
           'HistCTR',
-          # 'Price',
-          # 'CategoryID',
+          'Price',
+          'CategoryID',
+          # 'RegionID',
+          'RegionID.1',
+          # 'CityID',
+          'CategoryID.1',
           # 'AdID',
           # 'LocationID'
-            'month',
+            # 'month',
             'day',
             'weekday',
-            'days'
+            'days',
+            'hour',
+            'IsUserLoggedOn',
+            'LocationID.1',            
           ]
 
 
 
-X = train[:10**6]
+# train = train[:10**8]
+
+train = train[train['SearchDate'] > min_date]
+
+# train_cut['month'] = train_cut['SearchDate'].apply(lambda x: x.month)
+train['day'] = train['SearchDate'].apply(lambda x: str(x.day))
+train['weekday'] = train['SearchDate'].apply(lambda x: str(x.weekday()))
+train['days'] = train['SearchDate'].apply(lambda x: (x - jan1).days)
+train['hour'] = train['SearchDate'].apply(lambda x: str(x.hour))
+train['CategoryID'] = train['CategoryID'].apply(lambda x: str(x))
+train['CategoryID.1'] = train['CategoryID.1'].apply(lambda x: str(x))
+# train['LocationID.1'] = train['LocationID.1'].apply(lambda x: str(x))
+train['RegionID'] = train['RegionID'].apply(lambda x: str(x))
+train['RegionID.1'] = train['RegionID.1'].apply(lambda x: str(x))
+train['CityID'] = train['CityID'].apply(lambda x: str(x))
+train['CityID.1'] = train['CityID.1'].apply(lambda x: str(x))
 
 
-train_cut = train[:10**6]
-train_cut['SearchDate'] = train_cut['SearchDate'].str_to_datetime()
+print train.shape
 
-train_cut['month'] = train_cut['SearchDate'].apply(lambda x: x.month)
-train_cut['day'] = train_cut['SearchDate'].apply(lambda x: x.day)
-train_cut['weekday'] = train_cut['SearchDate'].apply(lambda x: x.weekday())
-train_cut['days'] = train_cut['SearchDate'].apply(lambda x: (x - jan1).days)
+ind = 2
+if ind == 1:
+	y = list(train['IsClick'])
 
-train_cut = train_cut[train_cut['SearchDate'] > min_date]
+	X = train[features].to_dataframe()
 
-y = list(train_cut['IsClick'])
+	print X.head()
+	print X.info()
 
-X = train_cut[features].to_dataframe()
+	print X.shape, len(y)
 
-print X.shape, len(y)
+	scaler = StandardScaler()
+	X = scaler.fit_transform(X)
 
-scaler = StandardScaler()
-X = scaler.fit_transform(X)
+	random_state = 42
 
-random_state = 42
+	# Learn
+	clf = LogisticRegression(random_state=random_state)
+
+	skf = cross_validation.StratifiedKFold(y, n_folds=5, shuffle=True, random_state=random_state)
+	scores = cross_validation.cross_val_score(clf, X, y, cv=skf, scoring='log_loss', n_jobs=-1)
+	print -np.mean(scores), np.std(scores)
+elif ind == 2:
+  print 'fitting'
+  model = gl.logistic_classifier.create(train,
+                                        target='IsClick', features=features)
+  print model.summary()                                       
 
 
-# Learn
-clf = LogisticRegression(random_state=random_state)
+  print 'reading test'
+  test = gl.SFrame(os.path.join('..', 'data', 'test_ads_search'))
 
-skf = cross_validation.StratifiedKFold(y, n_folds=5, shuffle=True, random_state=random_state)
-scores = cross_validation.cross_val_score(clf, X, y, cv=skf, scoring='log_loss', n_jobs=-1)
-print -np.mean(scores), np.std(scores)
+  print 'adding data features'
 
-# print 'splitting set'
-# sf_train, sf_test = train.random_split(0.5, seed=42)
-#
-# features=['Position',
-#           'HistCTR',
-#           'Price',
-#           # 'CategoryID',
-#           # 'AdID',
-#           # 'LocationID'
-#           ]
-#
-# model = gl.logistic_classifier.create(sf_train,
-#                                       target='IsClick',
-#                                       features=features,
-#                                       validation_set=sf_test)
-#
-# print 'predicting'
-# prediction = model.predict(sf_test, output_type='probablility')
-#
-# print prediction[:30]
-# print sf_test['IsClick'][:30]
-# print 'calculating score'
-# score = llfun(sf_test['IsClick'], prediction)
-# print score
+  test['SearchDate'] = test['SearchDate'].str_to_datetime()
+
+  test['day'] = test['SearchDate'].apply(lambda x: str(x.day))
+  test['hour'] = test['SearchDate'].apply(lambda x: str(x.hour))
+  test['weekday'] = test['SearchDate'].apply(lambda x: str(x.weekday()))
+  test['days'] = test['SearchDate'].apply(lambda x: (x - jan1).days)
+  test['CategoryID'] = test['CategoryID'].apply(lambda x: str(x))
+  test['CategoryID.1'] = test['CategoryID.1'].apply(lambda x: str(x))
+  # test['LocationID.1'] = test['LocationID.1'].apply(lambda x: str(x))
+  test['RegionID'] = test['RegionID'].apply(lambda x: str(x))
+  test['RegionID.1'] = test['RegionID.1'].apply(lambda x: str(x))
+
+  test['CityID'] = test['CityID'].apply(lambda x: str(x))
+  test['CityID.1'] = test['CityID.1'].apply(lambda x: str(x))
+
+
+  test = test.fillna('Price', a)
+  print test.shape
+  print 'predicting'
+  prediction = model.predict(test, output_type='probability')
+  result = pd.DataFrame()
+  result['IsClick'] = prediction
+  result['ID'] = test['ID']
+  result.to_csv('predictions/LR_{timestamp}.csv'.format(timestamp=time.time()), index=False)
+
