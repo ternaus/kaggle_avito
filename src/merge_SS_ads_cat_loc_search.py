@@ -60,27 +60,33 @@ print user.shape
 
 
 print 'merging train ads and category'
-train = train.join(category, how='left', on={'CategoryID', 'CategoryID'
-})
+train = train.join(category, how='left',
+                   # on={'CategoryID', 'CategoryID'}
+                   )
 print 'merging test ads and category'
-test = test.join(category, how='left', on={'CategoryID', 'CategoryID'
-})
+test = test.join(category, how='left',
+                 # on={'CategoryID', 'CategoryID'}
+                 )
 
 print 'merging train ads category and location'
-train = train.join(location, how='left', on={'LocationID', 'LocationID'
-})
+train = train.join(location, how='left',
+                   # on={'LocationID', 'LocationID'}
+                   )
 
 print 'merging test ads category and location'
-test = test.join(location, how='left', on={'LocationID', 'LocationID'
-})
+test = test.join(location, how='left',
+                 # on={'LocationID', 'LocationID'}
+                 )
 
 print 'merging search and location'
-search = search.join(location, how='left', on={'LocationID', 'LocationID'
-})
+search = search.join(location, how='left',
+                     # on={'LocationID', 'LocationID'}
+                     )
 
 print 'merging search and category'
-search = search.join(category, how='left', on={'CategoryID', 'CategoryID'
-})
+search = search.join(category, how='left',
+                     # on={'CategoryID', 'CategoryID'}
+                     )
 
 print 'merging train and search'
 training = train.join(search, how='left', on={'SearchID': 'SearchID',
