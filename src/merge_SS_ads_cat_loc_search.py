@@ -87,6 +87,10 @@ print 'merging search and category'
 search = search.join(category, how='left',
                      # on={'CategoryID', 'CategoryID'}
                      )
+print 'merging search and user'
+search = search.join(user, how='left',
+                     # on={'CategoryID', 'CategoryID'}
+                     )
 
 print 'merging train and search'
 training = train.join(search, on={'SearchID': 'SearchID',
