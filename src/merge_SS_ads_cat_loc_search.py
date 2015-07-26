@@ -115,6 +115,26 @@ print 'testing shape'
 print testing.shape
 print testing.column_names()
 
+import re
+import pandas as pd
+def filter_params(x):
+    if pd.isnull(x):
+        return []
+    else:
+        return re.findall('(\d+:)', x)
+
+train['Params_keys'] = train['Params'].apply(lambda x: filter_params(x))
+test['Params_keys'] = test['Params'].apply(lambda x: filter_params(x))
+
+train['SearchParams_keys'] = train['SearchParams'].apply(lambda x: filter_params(x))
+test['SearchParams_keys'] = test['SearchParams'].apply(lambda x: filter_params(x))
+
+def helper(x):
+    return len(set(x['Params_keys']).intersection(set(x['SearchParams_keys'])))
+
+train['overlap'] = train.apply(helper)
+test['overlap'] = test.apply(helper)
+
 print 'saving train'
 training.save(os.path.join('..', 'data', 'train_ads_search'))
 
